@@ -8,6 +8,9 @@ import { SettingsScreen } from './screens/Settings';
 
 import { useColorScheme } from 'react-native';
 
+import './i18n'
+import { useTranslation } from 'react-i18next'
+
 const Tab = createBottomTabNavigator();
 
 
@@ -19,17 +22,15 @@ function HomeScreen({ navigation }) {
   );
 }
 
-
 export default function App() {
 
   //Themeing.
   const colorScheme = useColorScheme()
   const tabbarIconColor = colorScheme === 'dark' ? 'white' : 'black'
   console.log(colorScheme)
+  const { t } = useTranslation()
 
   return (
-
-
 <NavigationContainer  theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} >
         <Tab.Navigator screenOptions={{
           headerShown: false,
@@ -39,22 +40,23 @@ export default function App() {
             backgroundColor: colorScheme === 'dark' ? 'black' : 'white'
           },
         }}>
-        <Tab.Screen name='Home' component={HomeScreen} 
+        <Tab.Screen name={t('home')} component={HomeScreen} 
         
         options ={ {
           tabBarLabel: ({focused, color, size}) => (
-            <Text style={{ color: tabbarIconColor}}>Home</Text>
+            <Text style={{ color: tabbarIconColor}}>{t('home')}</Text>
           ),
           tabBarIcon: ({ size, color }) => <MaterialCommunityIcons name='home' size={size} color={tabbarIconColor} />           
         }}
         />
         <Tab.Screen name="Settings" component={SettingsScreen} 
         options={{  tabBarLabel: ({focused, color, size}) => (
-          <Text style={{ color: tabbarIconColor}}>Settings</Text>
+          <Text style={{ color: tabbarIconColor}}>{t('settings')}</Text>
         ),
         tabBarIcon: ({ size, color }) => <MaterialCommunityIcons name='cog' size={size} color={tabbarIconColor} /> 
         }} />
       </Tab.Navigator>
     </NavigationContainer>
+
   );
 }
