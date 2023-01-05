@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { Picker } from "@react-native-picker/picker"
 
 
-
 export function SettingsScreen() {
 
     const colorScheme = useColorScheme()
@@ -24,8 +23,6 @@ export function SettingsScreen() {
           selectedValue={i18n.language}
           onValueChange={(val, i) => {
             i18n.changeLanguage(val)
-
-
           }}
           style={styles.picker} dropdownIconColor={colorScheme === 'dark' ? 'white': 'black'}>
           {

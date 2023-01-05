@@ -7,14 +7,28 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HomeStackScreen } from './screens/HomeScreen';
 import { SettingsScreen } from './screens/Settings';
-
+import * as Linking from 'expo-linking'
 import './i18n'
 import { useTranslation } from 'react-i18next'
 import { useColorScheme } from 'react-native';
 
 
+
 const Tab = createBottomTabNavigator();
 const queryClient = new QueryClient()
+
+const config = {
+  screens: {
+    News: {
+      screens: {
+        Article: "article/:url",
+      }
+    },
+    Settings: "settings"
+  },
+};
+
+const prefix = Linking.createURL('/');
 
 export default function App() {
 
@@ -26,10 +40,16 @@ export default function App() {
   //Translating
   const { t } = useTranslation()
 
+  const linking = {
+    prefixes: [prefix],
+    config
+  }
+
+
   return (
  <QueryClientProvider client={queryClient}>
-
-<NavigationContainer  theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} >
+    
+<NavigationContainer linking={linking}   theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} >
         <Tab.Navigator screenOptions={{
           headerShown: false,
           tabBarActiveBackgroundColor: colorScheme === 'dark' ? 'black' : 'white',
