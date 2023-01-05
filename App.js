@@ -4,23 +4,17 @@ import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HomeStackScreen } from './screens/HomeScreen';
 import { SettingsScreen } from './screens/Settings';
-
-import { useColorScheme } from 'react-native';
 
 import './i18n'
 import { useTranslation } from 'react-i18next'
+import { useColorScheme } from 'react-native';
+
 
 const Tab = createBottomTabNavigator();
-
-
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home screen</Text>
-    </View>
-  );
-}
+const queryClient = new QueryClient()
 
 export default function App() {
 
@@ -28,9 +22,13 @@ export default function App() {
   const colorScheme = useColorScheme()
   const tabbarIconColor = colorScheme === 'dark' ? 'white' : 'black'
   console.log(colorScheme)
+
+  //Translating
   const { t } = useTranslation()
 
   return (
+ <QueryClientProvider client={queryClient}>
+
 <NavigationContainer  theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} >
         <Tab.Navigator screenOptions={{
           headerShown: false,
@@ -40,7 +38,7 @@ export default function App() {
             backgroundColor: colorScheme === 'dark' ? 'black' : 'white'
           },
         }}>
-        <Tab.Screen name={t('home')} component={HomeScreen} 
+        <Tab.Screen name={t('home')} component={HomeStackScreen} 
         
         options ={ {
           tabBarLabel: ({focused, color, size}) => (
@@ -58,5 +56,6 @@ export default function App() {
       </Tab.Navigator>
     </NavigationContainer>
 
+</QueryClientProvider>
   );
 }
